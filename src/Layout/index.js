@@ -2,7 +2,7 @@ import React from "react";
 import Header from "./Header";
 import NotFound from "./NotFound";
 import { Route, Switch } from "react-router-dom";
-import Decks from "../home/Decks";
+import Decks from "../home/DeckList";
 
 function Layout() {
   return (
