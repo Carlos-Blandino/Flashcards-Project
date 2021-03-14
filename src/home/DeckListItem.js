@@ -1,16 +1,27 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { deleteDeck } from "../utils/api";
 
-export default function DeckListItem({ deck, key }) {
+export default function DeckListItem({ deck, index, setDeckList, deckList }) {
+  function handleDelete() {
+    const abort = new AbortController();
+    const signal = abort.signal;
+    console.log(deck);
+    const result = window.confirm(`
+    Delete this deck? \n\nYou will not be able to recover it.`);
+
+    if (result) {
+      deleteDeck(deck.id, signal);
+      deckList.splice(index, 1);
+      setDeckList([...deckList]);
+    }
+  }
+
   return (
-    <li key={key} style={{ listStyle: "none" }}>
+    <li key={index} style={{ listStyle: "none" }}>
       <div className="card" style={{ marginTop: "10px", maxWidth: "800px" }}>
-        <h5 className="card-header">Featured</h5>
+        <h5 className="card-header">{deck.name}</h5>
         <div className="card-body">
-          <h5 className="card-title">{deck.name}</h5>
-
           <h6>{deck.cards.length} cards</h6>
-
           <p className="card-text">{deck.description}</p>
           <div
             style={{
@@ -20,8 +31,7 @@ export default function DeckListItem({ deck, key }) {
             }}
           >
             <div>
-              <Link
-                to="#"
+              <button
                 className="btn btn-secondary"
                 style={{ marginRight: "10px" }}
               >
@@ -37,12 +47,8 @@ export default function DeckListItem({ deck, key }) {
                   <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z" />
                 </svg>{" "}
                 View
-              </Link>
-              <Link
-                to="#"
-                className="btn btn-primary"
-                style={{ margin: "0 10px" }}
-              >
+              </button>
+              <button className="btn btn-primary" style={{ margin: "0 10px" }}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="18"
@@ -59,10 +65,10 @@ export default function DeckListItem({ deck, key }) {
                   <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z" />
                 </svg>{" "}
                 Study
-              </Link>
+              </button>
             </div>
             <div style={{}}>
-              <Link to="#" className="btn btn-primary">
+              <button className="btn btn-danger" onClick={handleDelete}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
@@ -77,7 +83,7 @@ export default function DeckListItem({ deck, key }) {
                     d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
                   />
                 </svg>
-              </Link>
+              </button>
             </div>
           </div>
         </div>

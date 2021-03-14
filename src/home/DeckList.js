@@ -4,6 +4,7 @@ import DeckListItem from "./DeckListItem";
 
 export default function DeckList() {
   const [deckList, setDeckList] = useState([]);
+
   useEffect(() => {
     const abortController = new AbortController();
 
@@ -28,8 +29,13 @@ export default function DeckList() {
         </button>
       </div>
       {/*   deck goes here */}
-      {deckList.map((deck) => (
-        <DeckListItem deck={deck} key={deck.id} />
+      {deckList.map((deck, index) => (
+        <DeckListItem
+          deck={deck}
+          setDeckList={setDeckList}
+          deckList={deckList}
+          index={index}
+        />
       ))}
       {/* last div */}
     </div>
