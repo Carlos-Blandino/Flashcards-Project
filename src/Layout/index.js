@@ -2,7 +2,7 @@ import React from "react";
 import Header from "./Header";
 import NotFound from "./NotFound";
 import { Route, Switch } from "react-router-dom";
-import Decks from "../home/DeckList";
+import DeckList from "../home/DeckList";
 
 function Layout() {
   return (
@@ -12,7 +12,7 @@ function Layout() {
           <Route path="/" exact>
             <Header />
             {/* TODO: Implement the screen starting here */}
-            <Decks />
+            <DeckList />
           </Route>
           <Route>
             <NotFound />
