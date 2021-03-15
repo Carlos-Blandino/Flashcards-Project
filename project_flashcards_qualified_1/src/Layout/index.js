@@ -10,13 +10,15 @@ import { deleteDeck, listDecks } from "../utils/api";
 
 function Layout() {
   const [deckList, setDeckList] = useState([]);
+  const [name, setDeckName] = useState("");
   useEffect(() => {
     const abortController = new AbortController();
-
-    listDecks(abortController.signal).then((data) => setDeckList(data));
+    async function loadListDecks() {
+      const list = await listDecks(abortController.signal);
+      setDeckList(list);
+    }
+    loadListDecks();
   }, []);
-
-  const [deck, setDeck] = useState([]);
 
   return (
     <div>
@@ -27,15 +29,14 @@ function Layout() {
             <DeckList
               deckList={deckList}
               setDeckList={setDeckList}
-              deck={deck}
-              setDeck={setDeck}
+              setDeckName={setDeckName}
             />
           </Route>
           <Route path="/decks/new">
             <CreateDeck />
           </Route>{" "}
           <Route path="/decks/:deckId/study">
-            <Study />
+            <Study name={name} />
           </Route>
           <Route path="/decks/:deckId">
             <Deck deck={deckList} />

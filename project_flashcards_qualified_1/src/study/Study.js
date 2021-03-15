@@ -1,7 +1,41 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { listCards, readCard } from "../utils/api";
 
-export default function Study() {
+export default function Study({ name }) {
+  const { deckId } = useParams();
+  const [cards, setCards] = useState([]);
+  const [flip, setFlip] = useState(false);
+  const [cardNumber, setCardNumber] = useState(1);
+  const [card, setCard] = useState({});
+
+  const totalNumberOfCards = () => {
+    let count = 0;
+
+    return count;
+  };
+  function handleFlip() {
+    setFlip(!flip);
+  }
+
+  useEffect(() => {
+    const abortController = new AbortController();
+    async function loadCards() {
+      const tempCards = await listCards(deckId, abortController.signal);
+      setCards([tempCards]);
+    }
+    loadCards();
+  }, []);
+
+  function handleNext() {
+    setCardNumber(cardNumber + 1);
+    const abortController = new AbortController();
+    const signal = abortController.signal;
+    const newCard = readCard(cardNumber, signal);
+    setCard({ ...newCard });
+  }
+
+  console.log("test");
   return (
     <div>
       <nav aria-label="breadcrumb">
@@ -26,20 +60,29 @@ export default function Study() {
             aria-current="page"
             style={{ marginTop: "7px" }}
           >
+            {name}
+          </li>
+          <li
+            className="breadcrumb-item active"
+            aria-current="page"
+            style={{ marginTop: "7px" }}
+          >
             Study
           </li>
         </ol>
       </nav>
       <div>
-        <h1>Study: </h1>
+        <h1>Study:{name}</h1>
       </div>
 
       {/* card section */}
 
       <div className="card" style={{ marginTop: "10px", maxWidth: "800px" }}>
         <div className="card-body">
-          <h6>Card 1 of 3</h6>
-          <p className="card-text">Question to to answer goes here</p>
+          <h6>
+            Card {cardNumber} of {totalNumberOfCards()}
+          </h6>
+          <p className="card-text">{card.front}</p>
           <div
             style={{
               display: "flex",
@@ -52,6 +95,7 @@ export default function Study() {
                 to="#"
                 className="btn btn-secondary"
                 style={{ marginRight: "10px" }}
+                onClick={handleFlip}
               >
                 Flip
               </Link>
@@ -60,6 +104,7 @@ export default function Study() {
                 to="#"
                 className="btn btn-primary"
                 style={{ margin: "0 10px" }}
+                onClick={handleNext}
               >
                 Next
               </Link>

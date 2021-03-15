@@ -2,7 +2,12 @@ import React from "react";
 import DeckListItem from "./DeckListItem";
 import { Link } from "react-router-dom";
 
-export default function DeckList({ deckList, setDeckList, setDeck }) {
+export default function DeckList({
+  deckList,
+  setDeckList,
+  setDeck,
+  setDeckName,
+}) {
   return (
     <div>
       <div>
@@ -26,7 +31,12 @@ export default function DeckList({ deckList, setDeckList, setDeck }) {
       </div>
       {/*   deck goes here */}
       {deckList.map((deck, index) => (
-        <DeckListItem deck={deck} deckList={deckList} index={index} />
+        <DeckListItem
+          deck={deck}
+          deckList={deckList}
+          index={index}
+          setDeckName={setDeckName}
+        />
       ))}
       {/* last div */}
     </div>
