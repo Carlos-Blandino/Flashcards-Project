@@ -1,18 +1,20 @@
 import React from "react";
 import { deleteDeck } from "../utils/api";
+import { Link, useHistory } from "react-router-dom";
 
-export default function DeckListItem({ deck, index, setDeckList, deckList }) {
-  function handleDelete() {
+export default function DeckListItem({ deck, index, deckList }) {
+  const deckId = deck.id;
+  const history = useHistory();
+  async function handleDelete() {
     const abort = new AbortController();
     const signal = abort.signal;
-    console.log(deck);
     const result = window.confirm(`
     Delete this deck? \n\nYou will not be able to recover it.`);
 
     if (result) {
-      deleteDeck(deck.id, signal);
+      await deleteDeck(deck.id, signal);
       deckList.splice(index, 1);
-      setDeckList([...deckList]);
+      history.push("/");
     }
   }
 
@@ -31,7 +33,8 @@ export default function DeckListItem({ deck, index, setDeckList, deckList }) {
             }}
           >
             <div>
-              <button
+              <Link
+                to={`/decks/${deckId}`}
                 className="btn btn-secondary"
                 style={{ marginRight: "10px" }}
               >
@@ -47,8 +50,12 @@ export default function DeckListItem({ deck, index, setDeckList, deckList }) {
                   <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z" />
                 </svg>{" "}
                 View
-              </button>
-              <button className="btn btn-primary" style={{ margin: "0 10px" }}>
+              </Link>
+              <Link
+                to={`/decks/${deckId}/study`}
+                className="btn btn-primary"
+                style={{ margin: "0 10px" }}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="18"
@@ -65,7 +72,7 @@ export default function DeckListItem({ deck, index, setDeckList, deckList }) {
                   <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z" />
                 </svg>{" "}
                 Study
-              </button>
+              </Link>
             </div>
             <div style={{}}>
               <button className="btn btn-danger" onClick={handleDelete}>
