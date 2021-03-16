@@ -10,6 +10,49 @@ export default function Study({ name }) {
   const [card, setCard] = useState({});
   const history = useHistory();
 
+  useEffect(() => {
+    const abortController = new AbortController();
+    async function loadCards() {
+      try {
+        const tempCards = await listCards(
+          parseInt(deckId),
+          abortController.signal
+        );
+        setCards(tempCards);
+      } catch (error) {
+        if (error.name === "AbortError") {
+          console.log("Aborted");
+        } else {
+          throw error;
+        }
+      }
+    }
+    loadCards();
+
+    return () => abortController.abort();
+  }, []);
+
+  useEffect(() => {
+    const abortController = new AbortController();
+    async function reLoadCard() {
+      try {
+        const signal = abortController.signal;
+        if (cardNumber < cards.length) {
+          const newCard = await readCard(cards[cardNumber - 1].id, signal);
+          setCard(newCard);
+        }
+      } catch (error) {
+        if (error.name === "AbortError") {
+          console.log("Aborted");
+        } else {
+          throw error;
+        }
+      }
+    }
+    reLoadCard();
+    return () => abortController.abort();
+  }, [cards]);
+
   function handleFlip() {
     if (cardNumber === cards.length) {
       const response = window.confirm(
@@ -21,9 +64,10 @@ export default function Study({ name }) {
         async function reLoadCard() {
           const abortController = new AbortController();
           const signal = abortController.signal;
-          const newCard = await readCard(cardNumber, signal);
-          console.log("card", card);
-          setCard({ ...newCard });
+          if (cardNumber < cards.length) {
+            const newCard = await readCard(cards[cardNumber].id, signal);
+            setCard({ ...newCard });
+          }
         }
         reLoadCard();
       }
@@ -31,25 +75,6 @@ export default function Study({ name }) {
 
     setFlip(!flip);
   }
-
-  useEffect(() => {
-    const abortController = new AbortController();
-    async function loadCards() {
-      const tempCards = await listCards(deckId, abortController.signal);
-
-      setCards(tempCards);
-    }
-    loadCards();
-  }, []);
-
-  useEffect(() => {
-    const abortController = new AbortController();
-    async function loadCard() {
-      const tempCard = await readCard(deckId, abortController.signal);
-      setCard(tempCard);
-    }
-    loadCard();
-  }, []);
 
   async function handleNext() {
     setFlip(!flip);
@@ -65,8 +90,7 @@ export default function Study({ name }) {
     setCardNumber(cardNumber + 1);
     const abortController = new AbortController();
     const signal = abortController.signal;
-    const newCard = await readCard(cardNumber, signal);
-    console.log("card", card);
+    const newCard = await readCard(cards[cardNumber].id, signal);
     setCard({ ...newCard });
   }
 
