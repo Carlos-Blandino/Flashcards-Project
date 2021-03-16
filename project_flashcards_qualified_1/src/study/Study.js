@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useHistory } from "react-router-dom";
 import { listCards, readCard } from "../utils/api";
 
 export default function Study({ name }) {
@@ -8,13 +8,27 @@ export default function Study({ name }) {
   const [flip, setFlip] = useState(false);
   const [cardNumber, setCardNumber] = useState(1);
   const [card, setCard] = useState({});
+  const history = useHistory();
 
-  const totalNumberOfCards = () => {
-    let count = 0;
-
-    return count;
-  };
   function handleFlip() {
+    if (cardNumber === cards.length) {
+      const response = window.confirm(
+        "Restart cards?\n\nClick 'cancel to return to the home page."
+      );
+      if (!response) {
+        history.push("/");
+      } else {
+        async function reLoadCard() {
+          const abortController = new AbortController();
+          const signal = abortController.signal;
+          const newCard = await readCard(cardNumber, signal);
+          console.log("card", card);
+          setCard({ ...newCard });
+        }
+        reLoadCard();
+      }
+    }
+
     setFlip(!flip);
   }
 
@@ -22,20 +36,40 @@ export default function Study({ name }) {
     const abortController = new AbortController();
     async function loadCards() {
       const tempCards = await listCards(deckId, abortController.signal);
-      setCards([tempCards]);
+
+      setCards(tempCards);
     }
     loadCards();
   }, []);
 
-  function handleNext() {
+  useEffect(() => {
+    const abortController = new AbortController();
+    async function loadCard() {
+      const tempCard = await readCard(deckId, abortController.signal);
+      setCard(tempCard);
+    }
+    loadCard();
+  }, []);
+
+  async function handleNext() {
+    setFlip(!flip);
+    // if (cardNumber >= cards.length) {
+    //   const response = window.confirm(
+    //     "Restart cards?\n\nClick 'cancel to return to the home page."
+    //   );
+    //   if (!response) {
+    //     history.push("/");
+    //   }
+    //}
+
     setCardNumber(cardNumber + 1);
     const abortController = new AbortController();
     const signal = abortController.signal;
-    const newCard = readCard(cardNumber, signal);
+    const newCard = await readCard(cardNumber, signal);
+    console.log("card", card);
     setCard({ ...newCard });
   }
 
-  console.log("test");
   return (
     <div>
       <nav aria-label="breadcrumb">
@@ -80,7 +114,7 @@ export default function Study({ name }) {
       <div className="card" style={{ marginTop: "10px", maxWidth: "800px" }}>
         <div className="card-body">
           <h6>
-            Card {cardNumber} of {totalNumberOfCards()}
+            Card {cardNumber} of {cards.length}
           </h6>
           <p className="card-text">{card.front}</p>
           <div
@@ -99,15 +133,16 @@ export default function Study({ name }) {
               >
                 Flip
               </Link>
-
-              <Link
-                to="#"
-                className="btn btn-primary"
-                style={{ margin: "0 10px" }}
-                onClick={handleNext}
-              >
-                Next
-              </Link>
+              {flip && (
+                <Link
+                  to="#"
+                  className="btn btn-primary"
+                  style={{ margin: "0 10px" }}
+                  onClick={handleNext}
+                >
+                  Next
+                </Link>
+              )}
             </div>
           </div>
         </div>
