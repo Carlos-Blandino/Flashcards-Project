@@ -1,14 +1,16 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { createDeck } from "../utils/api";
 
-function CreateDeck() {
+function CreateDeck({ setRender }) {
   const initialFormState = {
     name: "",
     description: "",
   };
+
   const [formData, setFormData] = useState({ ...initialFormState });
   const [text, setText] = useState("");
+  const history = useHistory();
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -17,8 +19,7 @@ function CreateDeck() {
     const signal = abortController.signal;
     async function saveDeckData() {
       try {
-        const response = await createDeck(formData, signal);
-        setFormData({ ...response });
+        await createDeck(formData, signal);
       } catch (error) {
         if (error.name === "AbortError") {
           console.log("Aborted");
@@ -28,6 +29,7 @@ function CreateDeck() {
       }
     }
     saveDeckData();
+    setRender(true);
     setFormData({ ...initialFormState });
     return abortController.abort();
   }
@@ -39,7 +41,7 @@ function CreateDeck() {
   function handleReset() {
     setFormData({ ...initialFormState });
   }
-
+  function handleClickHome() {}
   return (
     <div>
       <nav aria-label="breadcrumb">

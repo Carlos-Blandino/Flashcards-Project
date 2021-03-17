@@ -2,7 +2,16 @@ import React from "react";
 import DeckListItem from "./DeckListItem";
 import { Link } from "react-router-dom";
 
-export default function DeckList({ deckList, setDeckList, setDeckName }) {
+export default function DeckList({
+  deckList,
+  setDeckList,
+  setDeckName,
+  render,
+  setRender,
+}) {
+  function handleClick() {
+    setRender(false);
+  }
   return (
     <div>
       <div>
@@ -25,6 +34,7 @@ export default function DeckList({ deckList, setDeckList, setDeckName }) {
         </Link>
       </div>
       {/*   deck goes here */}
+
       {deckList.map((deck, index) => (
         <DeckListItem
           deck={deck}
@@ -34,7 +44,7 @@ export default function DeckList({ deckList, setDeckList, setDeckName }) {
           setDeckList={setDeckList}
         />
       ))}
-      {/* last div */}
+      {handleClick()}
     </div>
   );
 }

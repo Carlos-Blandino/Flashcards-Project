@@ -7,11 +7,12 @@ import CreateDeck from "../create-deck/CreateDeck";
 import Deck from "../deck/Deck";
 import Study from "../study/Study";
 import AddCard from "../add-card/AddCard";
-import { deleteDeck, listDecks } from "../utils/api";
+import { listDecks } from "../utils/api";
 
 function Layout() {
   const [deckList, setDeckList] = useState([]);
   const [name, setDeckName] = useState("");
+  const [render, setRender] = useState(false);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -20,7 +21,7 @@ function Layout() {
       setDeckList(list);
     }
     loadListDecks();
-  }, []);
+  }, [render]);
 
   return (
     <div>
@@ -32,10 +33,16 @@ function Layout() {
               deckList={deckList}
               setDeckList={setDeckList}
               setDeckName={setDeckName}
+              render={render}
+              setRender={setRender}
             />
           </Route>{" "}
           <Route path="/decks/new">
-            <CreateDeck />
+            <CreateDeck
+              setDeckList={setDeckList}
+              deckList={deckList}
+              setRender={setRender}
+            />
           </Route>{" "}
           <Route path="/decks/:deckId/study" exact="true">
             <Study name={name} />
