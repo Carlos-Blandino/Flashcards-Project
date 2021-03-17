@@ -12,6 +12,7 @@ import { deleteDeck, listDecks } from "../utils/api";
 function Layout() {
   const [deckList, setDeckList] = useState([]);
   const [name, setDeckName] = useState("");
+
   useEffect(() => {
     const abortController = new AbortController();
     async function loadListDecks() {
@@ -19,7 +20,7 @@ function Layout() {
       setDeckList(list);
     }
     loadListDecks();
-  }, []);
+  }, [deckList]);
 
   return (
     <div>
@@ -40,7 +41,7 @@ function Layout() {
             <Study name={name} />
           </Route>
           <Route path="/decks/:deckId" exact="true">
-            <Deck deck={deckList} />
+            <Deck name={name} />
           </Route>
           <Route path="/decks/:deckId/cards/new" exact="true">
             <AddCard />

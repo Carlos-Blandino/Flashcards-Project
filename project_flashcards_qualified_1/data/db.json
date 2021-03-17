@@ -11,13 +11,8 @@
       "id": 2
     },
     {
-      "name": "Math",
-      "description": "Basic algebra",
-      "id": 3
-    },
-    {
       "name": "Swift",
-      "description": "Covering data types",
+      "description": "Data types",
       "id": 4
     }
   ],

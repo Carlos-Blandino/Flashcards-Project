@@ -17,7 +17,7 @@ export default function DeckListItem({ deck, index, deckList, setDeckName }) {
       history.push("/");
     }
   }
-  function handleStudyClick() {
+  function handleSetNameClick() {
     setDeckName(deck.name);
   }
 
@@ -38,6 +38,7 @@ export default function DeckListItem({ deck, index, deckList, setDeckName }) {
             <div>
               <Link
                 to={`/decks/${deckId}`}
+                onClick={handleSetNameClick}
                 className="btn btn-secondary"
                 style={{ marginRight: "10px" }}
               >
@@ -58,7 +59,7 @@ export default function DeckListItem({ deck, index, deckList, setDeckName }) {
                 to={`/decks/${deckId}/study`}
                 className="btn btn-primary"
                 style={{ margin: "0 10px" }}
-                onClick={handleStudyClick}
+                onClick={handleSetNameClick}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

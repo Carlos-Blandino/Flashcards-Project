@@ -4,8 +4,7 @@ import { Link } from "react-router-dom";
 
 export default function DeckList({
   deckList,
-  setDeckList,
-  setDeck,
+
   setDeckName,
 }) {
   return (
