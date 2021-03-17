@@ -20,7 +20,7 @@ function Layout() {
       setDeckList(list);
     }
     loadListDecks();
-  }, [deckList]);
+  }, []);
 
   return (
     <div>

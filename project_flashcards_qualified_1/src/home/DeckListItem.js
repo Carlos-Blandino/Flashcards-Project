@@ -2,7 +2,13 @@ import React from "react";
 import { deleteDeck } from "../utils/api";
 import { Link, useHistory } from "react-router-dom";
 
-export default function DeckListItem({ deck, index, deckList, setDeckName }) {
+export default function DeckListItem({
+  deck,
+  index,
+  deckList,
+  setDeckName,
+  setDeckList,
+}) {
   const deckId = deck.id;
   const history = useHistory();
   async function handleDelete() {
@@ -13,7 +19,9 @@ export default function DeckListItem({ deck, index, deckList, setDeckName }) {
 
     if (result) {
       await deleteDeck(deck.id, signal);
-      deckList.splice(index, 1);
+      const tempList = deckList.slice();
+      tempList.splice(index, 1);
+      setDeckList([...tempList]);
       history.push("/");
     }
   }

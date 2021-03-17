@@ -11,8 +11,13 @@
       "id": 2
     },
     {
+      "name": "Math",
+      "description": "algebra basics",
+      "id": 3
+    },
+    {
       "name": "Swift",
-      "description": "Data types",
+      "description": "Brief intro of types",
       "id": 4
     }
   ],

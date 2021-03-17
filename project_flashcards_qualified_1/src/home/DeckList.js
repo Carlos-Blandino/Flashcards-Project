@@ -2,11 +2,7 @@ import React from "react";
 import DeckListItem from "./DeckListItem";
 import { Link } from "react-router-dom";
 
-export default function DeckList({
-  deckList,
-
-  setDeckName,
-}) {
+export default function DeckList({ deckList, setDeckList, setDeckName }) {
   return (
     <div>
       <div>
@@ -35,6 +31,7 @@ export default function DeckList({
           deckList={deckList}
           index={index}
           setDeckName={setDeckName}
+          setDeckList={setDeckList}
         />
       ))}
       {/* last div */}
