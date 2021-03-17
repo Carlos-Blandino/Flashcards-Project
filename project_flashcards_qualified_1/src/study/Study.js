@@ -52,9 +52,10 @@ export default function Study({ name }) {
     reLoadCard();
     return () => abortController.abort();
   }, [cards]);
-
+  function restartCancelStudy() {}
   function handleFlip() {
-    if (cardNumber === cards.length) {
+    setFlip(!flip);
+    if (cardNumber === cards.length && flip === true) {
       const response = window.confirm(
         "Restart cards?\n\nClick 'cancel to return to the home page."
       );
@@ -64,29 +65,61 @@ export default function Study({ name }) {
         async function reLoadCard() {
           const abortController = new AbortController();
           const signal = abortController.signal;
+          const tempCards = await listCards(
+            parseInt(deckId),
+            abortController.signal
+          );
+          setCards(tempCards);
           if (cardNumber < cards.length) {
+            setCards(tempCards);
             const newCard = await readCard(cards[cardNumber].id, signal);
-            setCard({ ...newCard });
+            setCard(newCard);
           }
         }
         reLoadCard();
+        setCardNumber(1);
       }
     }
 
-    setFlip(!flip);
+    //
+    // }
   }
 
   async function handleNext() {
-    setFlip(!flip);
-    // if (cardNumber >= cards.length) {
-    //   const response = window.confirm(
-    //     "Restart cards?\n\nClick 'cancel to return to the home page."
-    //   );
-    //   if (!response) {
-    //     history.push("/");
-    //   }
-    //}
+    //don't reset the flip if its the last card
+    //no more cards to view in the cards container
+    if (cardNumber === cards.length) {
+      if (cardNumber === cards.length && flip === true) {
+        const response = window.confirm(
+          "Restart cards?\n\nClick 'cancel to return to the home page."
+        );
+        if (!response) {
+          history.push("/");
+        } else {
+          async function reLoadCard() {
+            const abortController = new AbortController();
+            const signal = abortController.signal;
+            const tempCards = await listCards(
+              parseInt(deckId),
+              abortController.signal
+            );
+            setCards(tempCards);
+            if (cardNumber < cards.length) {
+              setCards(tempCards);
+              const newCard = await readCard(cards[cardNumber].id, signal);
+              setCard(newCard);
+            }
+          }
+          reLoadCard();
+          setCardNumber(1);
+        }
+      }
+      setFlip(!flip);
+      return;
+    }
 
+    //reset the flip and start over with new card
+    setFlip(!flip);
     setCardNumber(cardNumber + 1);
     const abortController = new AbortController();
     const signal = abortController.signal;
@@ -140,7 +173,7 @@ export default function Study({ name }) {
           <h6>
             Card {cardNumber} of {cards.length}
           </h6>
-          <p className="card-text">{card.front}</p>
+          <p className="card-text">{flip === true ? card.back : card.front}</p>
           <div
             style={{
               display: "flex",
