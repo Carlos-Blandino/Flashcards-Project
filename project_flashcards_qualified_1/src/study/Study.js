@@ -262,10 +262,9 @@ export default function Study({ name }) {
             >
               <div>
                 <Link
-                  to="#"
+                  to={`/decks/${deckId}/cards/new`}
                   className="btn btn-primary"
                   style={{ margin: "0 10px" }}
-                  onClick={handleNext}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
