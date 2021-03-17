@@ -1,7 +1,45 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { createDeck } from "../utils/api";
 
 function CreateDeck() {
+  const initialFormState = {
+    name: "",
+    description: "",
+  };
+  const [formData, setFormData] = useState({ ...initialFormState });
+  const [text, setText] = useState("");
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    setFormData({ ...formData, [event.target.name]: event.target.value });
+    const abortController = new AbortController();
+    const signal = abortController.signal;
+    async function saveDeckData() {
+      try {
+        const response = await createDeck(formData, signal);
+        setFormData({ ...response });
+      } catch (error) {
+        if (error.name === "AbortError") {
+          console.log("Aborted");
+        } else {
+          throw error;
+        }
+      }
+    }
+    saveDeckData();
+    setFormData({ ...initialFormState });
+    return abortController.abort();
+  }
+
+  function handleChange(event) {
+    setText(event.target.value);
+    setFormData({ ...formData, [event.target.name]: event.target.value });
+  }
+  function handleReset() {
+    setFormData({ ...initialFormState });
+  }
+
   return (
     <div>
       <nav aria-label="breadcrumb">
@@ -34,15 +72,18 @@ function CreateDeck() {
         <h1>Create Deck</h1>
       </div>
       <div>
-        <form>
+        <form onSubmit={handleSubmit}>
           <div class="mb-3">
             <label for="name" class="form-label">
               Name
             </label>
             <input
               type="text"
+              name="name"
               class="form-control"
               id="name"
+              value={formData.name}
+              onChange={handleChange}
               placeholder="Deck Name"
             />
           </div>
@@ -53,13 +94,17 @@ function CreateDeck() {
             <textarea
               class="form-control"
               id="description"
+              name="description"
               rows="3"
+              onChange={handleChange}
+              value={formData.description}
               placeholder="Brief description of deck"
             ></textarea>
           </div>
           <div class="col-auto">
             <button
-              type="Reset"
+              type="reset"
+              onClick={handleReset}
               class="btn btn-secondary mb-3"
               style={{ marginRight: "10px" }}
             >
