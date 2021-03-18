@@ -7,7 +7,7 @@ import CreateDeck from "../create-deck/CreateDeck";
 import Deck from "../deck/Deck";
 import Study from "../study/Study";
 import AddCard from "../add-card/AddCard";
-import { listDecks } from "../utils/api";
+import { createDeck, listDecks } from "../utils/api";
 import EditDeck from "../edit-deck/EditDeck";
 
 function Layout() {
