@@ -8,6 +8,7 @@ import Deck from "../deck/Deck";
 import Study from "../study/Study";
 import AddCard from "../add-card/AddCard";
 import { listDecks } from "../utils/api";
+import EditDeck from "../edit-deck/EditDeck";
 
 function Layout() {
   const [deckList, setDeckList] = useState([]);
@@ -54,6 +55,9 @@ function Layout() {
               setDeckList={setDeckList}
               setRender={setRender}
             />
+          </Route>
+          <Route path="/decks/:deckId/edit" exact="true">
+            <EditDeck />
           </Route>
           <Route path="/decks/:deckId/cards/new" exact="true">
             <AddCard />
