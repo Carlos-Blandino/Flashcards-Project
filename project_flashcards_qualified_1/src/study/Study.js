@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams, useHistory } from "react-router-dom";
-import { listCards, readCard } from "../utils/api";
+import { listCards, readCard, readDeck } from "../utils/api";
 
-export default function Study({ name }) {
+export default function Study({ deckInfo }) {
   const { deckId } = useParams();
   const [cards, setCards] = useState([]);
   const [flip, setFlip] = useState(false);
   const [cardNumber, setCardNumber] = useState(1);
   const [card, setCard] = useState({});
   const history = useHistory();
+  const [deck, setDeck] = useState({});
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -18,7 +19,6 @@ export default function Study({ name }) {
           parseInt(deckId),
           abortController.signal
         );
-
         setCards(tempCards);
       } catch (error) {
         if (error.name === "AbortError") {
@@ -29,9 +29,30 @@ export default function Study({ name }) {
       }
     }
     loadCards();
-
     return () => abortController.abort();
   }, []);
+
+  // useEffect(() => {
+  //   const abortController = new AbortController();
+  //   async function loadDeck() {
+  //     try {
+  //       const response = await readDeck(
+  //         parseInt(deckId),
+  //         abortController.signal
+  //       );
+  //       setDeck({ ...response });
+  //     } catch (error) {
+  //       if (error.name === "AbortError") {
+  //         console.log("Aborted");
+  //       } else {
+  //         throw error;
+  //       }
+  //     }
+  //   }
+  //   loadDeck();
+
+  //   return abortController.abort();
+  // }, []);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -149,7 +170,7 @@ export default function Study({ name }) {
             aria-current="page"
             style={{ marginTop: "7px" }}
           >
-            {name}
+            {deckInfo.deckName}
           </li>
 
           <li
@@ -163,11 +184,11 @@ export default function Study({ name }) {
       </nav>
       {cards.length < 3 ? (
         <div>
-          <h1>{name}: Study</h1>
+          <h1>{deckInfo.deckName}: Study</h1>
         </div>
       ) : (
         <div>
-          <h1>Study:{name}</h1>
+          <h1>Study:{deckInfo.deckName}</h1>
         </div>
       )}
 

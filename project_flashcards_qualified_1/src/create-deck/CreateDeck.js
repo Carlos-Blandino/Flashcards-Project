@@ -41,7 +41,7 @@ function CreateDeck({ setRender }) {
   function handleReset() {
     setFormData({ ...initialFormState });
   }
-  function handleClickHome() {}
+
   return (
     <div>
       <nav aria-label="breadcrumb">

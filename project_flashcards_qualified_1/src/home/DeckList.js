@@ -5,8 +5,7 @@ import { Link } from "react-router-dom";
 export default function DeckList({
   deckList,
   setDeckList,
-  setDeckName,
-  render,
+  setDeckInfo,
   setRender,
 }) {
   function handleClick() {
@@ -40,7 +39,7 @@ export default function DeckList({
           deck={deck}
           deckList={deckList}
           index={index}
-          setDeckName={setDeckName}
+          setDeckInfo={setDeckInfo}
           setDeckList={setDeckList}
         />
       ))}

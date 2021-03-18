@@ -6,7 +6,7 @@ export default function DeckListItem({
   deck,
   index,
   deckList,
-  setDeckName,
+  setDeckInfo,
   setDeckList,
 }) {
   const deckId = deck.id;
@@ -26,7 +26,11 @@ export default function DeckListItem({
     }
   }
   function handleSetNameClick() {
-    setDeckName(deck.name);
+    const info = {
+      deckName: deck.name,
+      deckDescription: deck.description,
+    };
+    setDeckInfo({ ...info });
   }
 
   return (

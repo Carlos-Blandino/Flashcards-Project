@@ -11,7 +11,7 @@ import { listDecks } from "../utils/api";
 
 function Layout() {
   const [deckList, setDeckList] = useState([]);
-  const [name, setDeckName] = useState("");
+  const [deckInfo, setDeckInfo] = useState({});
   const [render, setRender] = useState(false);
 
   useEffect(() => {
@@ -32,7 +32,7 @@ function Layout() {
             <DeckList
               deckList={deckList}
               setDeckList={setDeckList}
-              setDeckName={setDeckName}
+              setDeckInfo={setDeckInfo}
               render={render}
               setRender={setRender}
             />
@@ -45,10 +45,15 @@ function Layout() {
             />
           </Route>{" "}
           <Route path="/decks/:deckId/study" exact="true">
-            <Study name={name} />
+            <Study deckInfo={deckInfo} />
           </Route>
           <Route path="/decks/:deckId" exact="true">
-            <Deck name={name} />
+            <Deck
+              deckInfo={deckInfo}
+              deckList={deckList}
+              setDeckList={setDeckList}
+              setRender={setRender}
+            />
           </Route>
           <Route path="/decks/:deckId/cards/new" exact="true">
             <AddCard />
