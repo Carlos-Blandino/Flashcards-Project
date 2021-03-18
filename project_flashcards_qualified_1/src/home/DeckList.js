@@ -39,7 +39,6 @@ export default function DeckList({
           deck={deck}
           deckList={deckList}
           index={index}
-          setDeckInfo={setDeckInfo}
           setDeckList={setDeckList}
         />
       ))}

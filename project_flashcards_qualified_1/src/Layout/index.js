@@ -4,7 +4,7 @@ import NotFound from "./NotFound";
 import { Route, Switch } from "react-router-dom";
 import DeckList from "../home/DeckList";
 import CreateDeck from "../create-deck/CreateDeck";
-import Deck from "../deck/Deck";
+import Decks from "../deck/Decks";
 import Study from "../study/Study";
 import AddCard from "../add-card/AddCard";
 import { createDeck, listDecks } from "../utils/api";
@@ -12,7 +12,6 @@ import EditDeck from "../edit-deck/EditDeck";
 
 function Layout() {
   const [deckList, setDeckList] = useState([]);
-  const [deckInfo, setDeckInfo] = useState({});
   const [render, setRender] = useState(false);
 
   useEffect(() => {
@@ -33,7 +32,6 @@ function Layout() {
             <DeckList
               deckList={deckList}
               setDeckList={setDeckList}
-              setDeckInfo={setDeckInfo}
               render={render}
               setRender={setRender}
             />
@@ -46,11 +44,10 @@ function Layout() {
             />
           </Route>{" "}
           <Route path="/decks/:deckId/study" exact="true">
-            <Study deckInfo={deckInfo} />
+            <Study />
           </Route>
           <Route path="/decks/:deckId" exact="true">
-            <Deck
-              deckInfo={deckInfo}
+            <Decks
               deckList={deckList}
               setDeckList={setDeckList}
               setRender={setRender}

@@ -1,13 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams, useHistory } from "react-router-dom";
-import { listCards, readCard, readDeck, deleteDeck } from "../utils/api";
+import { listCards, deleteDeck, readDeck } from "../utils/api";
 
-export default function Deck({ deckInfo, deckList, setDeckList, setRender }) {
+export default function Decks({ setRender }) {
   const { deckId } = useParams();
   const [cards, setCards] = useState([]);
-  const [cardNumber, setCardNumber] = useState(1);
-  const [card, setCard] = useState({});
   const history = useHistory();
+  const [deckInfo, setDeckInfo] = useState({});
+
+  useEffect(() => {
+    const abort = new AbortController();
+    const signal = abort.signal;
+    async function loadDeck() {
+      const tempDeck = await readDeck(deckId, signal);
+      setDeckInfo({ ...tempDeck });
+    }
+    loadDeck();
+    return () => {
+      abort.abort();
+    };
+  }, []);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -32,27 +44,6 @@ export default function Deck({ deckInfo, deckList, setDeckList, setRender }) {
     return () => abortController.abort();
   }, []);
 
-  useEffect(() => {
-    const abortController = new AbortController();
-    async function reLoadCard() {
-      try {
-        const signal = abortController.signal;
-        if (cardNumber < cards.length) {
-          const newCard = await readCard(cards[cardNumber - 1].id, signal);
-          setCard(newCard);
-        }
-      } catch (error) {
-        if (error.name === "AbortError") {
-          console.log("Aborted");
-        } else {
-          throw error;
-        }
-      }
-    }
-    reLoadCard();
-    return () => abortController.abort();
-  }, [cards]);
-
   async function handleDelete() {
     const abort = new AbortController();
     const signal = abort.signal;
@@ -62,9 +53,6 @@ export default function Deck({ deckInfo, deckList, setDeckList, setRender }) {
     if (result) {
       await deleteDeck(deckId, signal);
       setRender(true);
-      // const tempList = deckList.slice();
-      // tempList.splice(deckId, 1);
-      // setDeckList([...tempList]);
       history.push("/");
     }
   }
@@ -93,16 +81,16 @@ export default function Deck({ deckInfo, deckList, setDeckList, setRender }) {
             aria-current="page"
             style={{ marginTop: "7px" }}
           >
-            {deckInfo.deckName}
+            {deckInfo.name}
           </li>
         </ol>
       </nav>
       <div>
-        <h3>{deckInfo.deckName}</h3>
+        <h3>{deckInfo.name}</h3>
       </div>
       <div className="card" style={{ marginTop: "10px" }}>
         <div className="card-body">
-          <p>{deckInfo.deckDescription}</p>
+          <p>{deckInfo.description}</p>
           <div
             style={{
               display: "flex",

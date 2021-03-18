@@ -2,13 +2,7 @@ import React from "react";
 import { deleteDeck } from "../utils/api";
 import { Link, useHistory } from "react-router-dom";
 
-export default function DeckListItem({
-  deck,
-  index,
-  deckList,
-  setDeckInfo,
-  setDeckList,
-}) {
+export default function DeckListItem({ deck, index, deckList, setDeckList }) {
   const deckId = deck.id;
   const history = useHistory();
   async function handleDelete() {
@@ -25,13 +19,13 @@ export default function DeckListItem({
       history.push("/");
     }
   }
-  function handleSetNameClick() {
-    const info = {
-      deckName: deck.name,
-      deckDescription: deck.description,
-    };
-    setDeckInfo({ ...info });
-  }
+  // function handleSetNameClick() {
+  //   const info = {
+  //     deckName: deck.name,
+  //     deckDescription: deck.description,
+  //   };
+  //   setDeckInfo({ ...info });
+  // }
 
   return (
     <li key={index} style={{ listStyle: "none" }}>
@@ -50,7 +44,6 @@ export default function DeckListItem({
             <div>
               <Link
                 to={`/decks/${deckId}`}
-                onClick={handleSetNameClick}
                 className="btn btn-secondary"
                 style={{ marginRight: "10px" }}
               >
@@ -71,7 +64,6 @@ export default function DeckListItem({
                 to={`/decks/${deckId}/study`}
                 className="btn btn-primary"
                 style={{ margin: "0 10px" }}
-                onClick={handleSetNameClick}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

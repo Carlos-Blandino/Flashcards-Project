@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams, useHistory } from "react-router-dom";
 import { listCards, readCard, readDeck } from "../utils/api";
 
-export default function Study({ deckInfo }) {
+export default function Study({}) {
   const { deckId } = useParams();
   const [cards, setCards] = useState([]);
   const [flip, setFlip] = useState(false);
@@ -10,7 +10,20 @@ export default function Study({ deckInfo }) {
   const [card, setCard] = useState({});
   const history = useHistory();
   const [deck, setDeck] = useState({});
+  const [deckInfo, setDeckInfo] = useState({});
 
+  useEffect(() => {
+    const abort = new AbortController();
+    const signal = abort.signal;
+    async function loadDeck() {
+      const tempDeck = await readDeck(deckId, signal);
+      setDeckInfo({ ...tempDeck });
+    }
+    loadDeck();
+    return () => {
+      abort.abort();
+    };
+  }, []);
   useEffect(() => {
     const abortController = new AbortController();
     async function loadCards() {
@@ -170,7 +183,7 @@ export default function Study({ deckInfo }) {
             aria-current="page"
             style={{ marginTop: "7px" }}
           >
-            {deckInfo.deckName}
+            {deckInfo.name}
           </li>
 
           <li
@@ -184,11 +197,11 @@ export default function Study({ deckInfo }) {
       </nav>
       {cards.length < 3 ? (
         <div>
-          <h1>{deckInfo.deckName}: Study</h1>
+          <h1>{deckInfo.name}: Study</h1>
         </div>
       ) : (
         <div>
-          <h1>Study:{deckInfo.deckName}</h1>
+          <h1>Study:{deckInfo.name}</h1>
         </div>
       )}
 
