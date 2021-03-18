@@ -54,7 +54,7 @@ function Layout() {
             />
           </Route>
           <Route path="/decks/:deckId/edit" exact="true">
-            <EditDeck />
+            <EditDeck setRender={setRender} render={render} />
           </Route>
           <Route path="/decks/:deckId/cards/new" exact="true">
             <AddCard />
