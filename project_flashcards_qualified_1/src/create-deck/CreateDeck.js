@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { createDeck } from "../utils/api";
 
 function CreateDeck({ setRender }) {
@@ -9,8 +9,6 @@ function CreateDeck({ setRender }) {
   };
 
   const [formData, setFormData] = useState({ ...initialFormState });
-  const [text, setText] = useState("");
-  const history = useHistory();
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -35,7 +33,6 @@ function CreateDeck({ setRender }) {
   }
 
   function handleChange(event) {
-    setText(event.target.value);
     setFormData({ ...formData, [event.target.name]: event.target.value });
   }
   function handleReset() {

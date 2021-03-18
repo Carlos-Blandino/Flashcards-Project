@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams, useHistory } from "react-router-dom";
-import { deleteDeck, readDeck } from "../utils/api";
+import { deleteDeck, readDeck, deleteCard } from "../utils/api";
 
 export default function Decks({ setRender }) {
   const { deckId } = useParams();
   const [cards, setCards] = useState([]);
   const history = useHistory();
   const [deckInfo, setDeckInfo] = useState({});
+  const [renderCards, setCardsRender] = useState(false);
 
   useEffect(() => {
     const abort = new AbortController();
@@ -20,9 +21,9 @@ export default function Decks({ setRender }) {
     return () => {
       abort.abort();
     };
-  }, []);
+  }, [renderCards]);
 
-  async function handleDelete() {
+  async function handleDeleteDeck() {
     const abort = new AbortController();
     const signal = abort.signal;
     const result = window.confirm(`
@@ -32,6 +33,32 @@ export default function Decks({ setRender }) {
       await deleteDeck(deckId, signal);
       setRender(true);
       history.push("/");
+    }
+  }
+
+  async function handleDeleteCard(event) {
+    event.preventDefault();
+    let cardId = event.target.getAttribute("id");
+
+    console.log("id", cardId);
+
+    const abort = new AbortController();
+    const signal = abort.signal;
+    const result = window.confirm(
+      `Delete this Card? \n\nYou will not be able to recover it.`
+    );
+
+    if (result) {
+      try {
+        await deleteCard(cardId, signal);
+        setCardsRender(!renderCards);
+      } catch (error) {
+        if (error.name === "AbortError") {
+          console.log("Aborted");
+        } else {
+          throw error;
+        }
+      }
     }
   }
 
@@ -145,7 +172,7 @@ export default function Decks({ setRender }) {
               </div>
             </div>
             <div style={{}}>
-              <button className="btn btn-danger" onClick={handleDelete}>
+              <button className="btn btn-danger" onClick={handleDeleteDeck}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
@@ -219,9 +246,10 @@ export default function Decks({ setRender }) {
                         Edit
                       </Link>
                     </div>
-                    <div>
-                      <button className="btn btn-danger">
+                    <div onClick={handleDeleteCard}>
+                      <button id={card.id} className="btn btn-danger">
                         <svg
+                          id={card.id}
                           xmlns="http://www.w3.org/2000/svg"
                           width="16"
                           height="16"
@@ -229,8 +257,12 @@ export default function Decks({ setRender }) {
                           className="bi bi-trash"
                           viewBox="0 0 16 16"
                         >
-                          <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
                           <path
+                            id={card.id}
+                            d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"
+                          />
+                          <path
+                            id={card.id}
                             fillRule="evenodd"
                             d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
                           />

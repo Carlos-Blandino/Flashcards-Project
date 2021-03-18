@@ -5,6 +5,7 @@ import { Link, useHistory } from "react-router-dom";
 export default function DeckListItem({ deck, index, deckList, setDeckList }) {
   const deckId = deck.id;
   const history = useHistory();
+
   async function handleDelete() {
     const abort = new AbortController();
     const signal = abort.signal;
@@ -19,13 +20,6 @@ export default function DeckListItem({ deck, index, deckList, setDeckList }) {
       history.push("/");
     }
   }
-  // function handleSetNameClick() {
-  //   const info = {
-  //     deckName: deck.name,
-  //     deckDescription: deck.description,
-  //   };
-  //   setDeckInfo({ ...info });
-  // }
 
   return (
     <li key={index} style={{ listStyle: "none" }}>

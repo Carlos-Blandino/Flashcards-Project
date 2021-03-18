@@ -2,12 +2,7 @@ import React from "react";
 import DeckListItem from "./DeckListItem";
 import { Link } from "react-router-dom";
 
-export default function DeckList({
-  deckList,
-  setDeckList,
-  setDeckInfo,
-  setRender,
-}) {
+export default function DeckList({ deckList, setDeckList, setRender }) {
   function handleClick() {
     setRender(false);
   }
