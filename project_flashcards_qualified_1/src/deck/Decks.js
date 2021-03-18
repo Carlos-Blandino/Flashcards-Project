@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams, useHistory } from "react-router-dom";
-import { listCards, deleteDeck, readDeck } from "../utils/api";
+import { deleteDeck, readDeck } from "../utils/api";
 
 export default function Decks({ setRender }) {
   const { deckId } = useParams();
@@ -14,34 +14,12 @@ export default function Decks({ setRender }) {
     async function loadDeck() {
       const tempDeck = await readDeck(deckId, signal);
       setDeckInfo({ ...tempDeck });
+      setCards(tempDeck.cards);
     }
     loadDeck();
     return () => {
       abort.abort();
     };
-  }, []);
-
-  useEffect(() => {
-    const abortController = new AbortController();
-    async function loadCards() {
-      try {
-        const tempCards = await listCards(
-          parseInt(deckId),
-          abortController.signal
-        );
-
-        setCards(tempCards);
-      } catch (error) {
-        if (error.name === "AbortError") {
-          console.log("Aborted");
-        } else {
-          throw error;
-        }
-      }
-    }
-    loadCards();
-
-    return () => abortController.abort();
   }, []);
 
   async function handleDelete() {

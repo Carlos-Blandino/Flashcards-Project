@@ -18,54 +18,13 @@ export default function Study({}) {
     async function loadDeck() {
       const tempDeck = await readDeck(deckId, signal);
       setDeckInfo({ ...tempDeck });
+      setCards(tempDeck.cards);
     }
     loadDeck();
     return () => {
       abort.abort();
     };
   }, []);
-  useEffect(() => {
-    const abortController = new AbortController();
-    async function loadCards() {
-      try {
-        const tempCards = await listCards(
-          parseInt(deckId),
-          abortController.signal
-        );
-        setCards(tempCards);
-      } catch (error) {
-        if (error.name === "AbortError") {
-          console.log("Aborted");
-        } else {
-          throw error;
-        }
-      }
-    }
-    loadCards();
-    return () => abortController.abort();
-  }, []);
-
-  // useEffect(() => {
-  //   const abortController = new AbortController();
-  //   async function loadDeck() {
-  //     try {
-  //       const response = await readDeck(
-  //         parseInt(deckId),
-  //         abortController.signal
-  //       );
-  //       setDeck({ ...response });
-  //     } catch (error) {
-  //       if (error.name === "AbortError") {
-  //         console.log("Aborted");
-  //       } else {
-  //         throw error;
-  //       }
-  //     }
-  //   }
-  //   loadDeck();
-
-  //   return abortController.abort();
-  // }, []);
 
   useEffect(() => {
     const abortController = new AbortController();
