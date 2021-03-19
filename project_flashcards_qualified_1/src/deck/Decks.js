@@ -112,7 +112,7 @@ export default function Decks({ setRender }) {
             >
               <div>
                 <Link
-                  to={`/decks/${deckId}/ed`}
+                  to={`/decks/${deckId}/edit`}
                   className="btn btn-secondary"
                   style={{ marginRight: "10px" }}
                 >

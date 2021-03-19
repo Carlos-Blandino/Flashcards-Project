@@ -2,7 +2,7 @@
   "decks": [
     {
       "id": 1,
-      "name": "Rendering in React is not Easy",
+      "name": "Rendering in React ",
       "description": "React's component structure allows for quickly building a complex web application that relies on DOM manipulation. "
     },
     {
@@ -48,12 +48,6 @@
       "back": "b",
       "deckId": 1,
       "id": 7
-    },
-    {
-      "front": "1 - 1",
-      "back": "0",
-      "deckId": 1,
-      "id": 9
     }
   ]
 }

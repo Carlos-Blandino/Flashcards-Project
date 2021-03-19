@@ -5,7 +5,6 @@ import { readDeck, updateDeck } from "../utils/api";
 function EditDeck({ setRender, render }) {
   const history = useHistory();
   const { deckId } = useParams();
-  //const [deckInfo, setDeckInfo] = useState({});
   const [formData, setFormData] = useState({});
   const [renderDeck, setRenderDeck] = useState(false);
 
@@ -14,7 +13,7 @@ function EditDeck({ setRender, render }) {
     const signal = abort.signal;
     async function loadDeck() {
       const tempDeck = await readDeck(deckId, signal);
-      // setDeckInfo({ ...tempDeck });
+
       setFormData({ ...tempDeck });
     }
     loadDeck();
@@ -53,8 +52,7 @@ function EditDeck({ setRender, render }) {
     setFormData({ ...formData, [event.target.name]: event.target.value });
   }
   function handleCancel() {
-    setFormData({ ...initialFormState });
-    setRenderDeck(!renderDeck);
+    history.goBack();
   }
 
   return (

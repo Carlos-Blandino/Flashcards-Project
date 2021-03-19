@@ -7,7 +7,7 @@ import CreateDeck from "../create-deck/CreateDeck";
 import Decks from "../deck/Decks";
 import Study from "../study/Study";
 import AddCard from "../add-card/AddCard";
-import { listDecks, readDeck } from "../utils/api";
+import { listDecks } from "../utils/api";
 import EditDeck from "../edit-deck/EditDeck";
 import EditCard from "../edit-card/EditCard";
 

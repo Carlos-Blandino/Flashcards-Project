@@ -9,7 +9,6 @@ export default function Study({}) {
   const [cardNumber, setCardNumber] = useState(1);
   const [card, setCard] = useState({});
   const history = useHistory();
-  const [deck, setDeck] = useState({});
   const [deckInfo, setDeckInfo] = useState({});
 
   useEffect(() => {
@@ -19,6 +18,7 @@ export default function Study({}) {
       const tempDeck = await readDeck(deckId, signal);
       setDeckInfo({ ...tempDeck });
       setCards(tempDeck.cards);
+      console.log("card", tempDeck.cards);
     }
     loadDeck();
     return () => {

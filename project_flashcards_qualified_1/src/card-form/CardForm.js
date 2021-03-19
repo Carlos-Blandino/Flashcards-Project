@@ -1,44 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import { createDeck } from "../utils/api";
 
-function CreateDeck({ setRender, render }) {
-  const initialFormState = {
-    name: "",
-    description: "",
-  };
-  const [formData, setFormData] = useState({ ...initialFormState });
-
-  function handleSubmit(event) {
-    event.preventDefault();
-    setFormData({ ...formData, [event.target.name]: event.target.value });
-    const abortController = new AbortController();
-    const signal = abortController.signal;
-    async function saveDeckData() {
-      try {
-        await createDeck(formData, signal);
-      } catch (error) {
-        if (error.name === "AbortError") {
-          console.log("Aborted");
-        } else {
-          throw error;
-        }
-      }
-    }
-    saveDeckData();
-    setRender(!render);
-    setFormData({ ...initialFormState });
-    return abortController.abort();
-  }
-
-  function handleChange(event) {
-    setFormData({ ...formData, [event.target.name]: event.target.value });
-  }
-
-  function handleReset() {
-    setFormData({ ...initialFormState });
-  }
-
+export default function CardForm({
+  handleReset,
+  handleSubmit,
+  handleChange,
+  deckData,
+  formData,
+  mode,
+}) {
   return (
     <div>
       <nav aria-label="breadcrumb">
@@ -63,54 +33,61 @@ function CreateDeck({ setRender, render }) {
             aria-current="page"
             style={{ marginTop: "7px" }}
           >
-            Create Deck
+            <Link onClick={handleReset}>{deckData.name}</Link>
+          </li>
+          <li
+            className="breadcrumb-item active"
+            aria-current="page"
+            style={{ marginTop: "7px" }}
+          >
+            Add Card
           </li>
         </ol>
       </nav>
       <div>
-        <h1>Create Deck</h1>
+        <h3>
+          {mode === "editCard" ? "Edit Card" : `${deckData.name} : Add Card`}
+        </h3>
       </div>
       <div>
         <form onSubmit={handleSubmit}>
           <div class="mb-3">
             <label for="name" class="form-label">
-              Name
+              Front
             </label>
-            <input
-              type="text"
-              name="name"
+            <textarea
+              name="front"
               class="form-control"
               id="name"
-              value={formData.name}
+              value={formData.front}
               onChange={handleChange}
-              placeholder="Deck Name"
-            />
+              placeholder="Front side of card"
+            ></textarea>
           </div>
           <div class="mb-3">
             <label for="description" class="form-label">
-              Description
+              Back
             </label>
             <textarea
               class="form-control"
               id="description"
-              name="description"
-              rows="3"
+              name="back"
               onChange={handleChange}
-              value={formData.description}
-              placeholder="Brief description of deck"
+              value={formData.back}
+              placeholder="Back side of card"
             ></textarea>
           </div>
           <div class="col-auto">
             <button
-              type="reset"
+              type="button"
               onClick={handleReset}
               class="btn btn-secondary mb-3"
               style={{ marginRight: "10px" }}
             >
-              Reset
+              {mode === "editCard" ? "Cancel" : "Done"}
             </button>
             <button type="submit" class="btn btn-primary mb-3">
-              Submit
+              {mode === "editCard" ? "Submit" : "Save"}
             </button>
           </div>
         </form>
@@ -118,4 +95,3 @@ function CreateDeck({ setRender, render }) {
     </div>
   );
 }
-export default CreateDeck;
