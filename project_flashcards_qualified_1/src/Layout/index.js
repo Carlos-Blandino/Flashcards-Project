@@ -7,7 +7,7 @@ import CreateDeck from "../create-deck/CreateDeck";
 import Decks from "../deck/Decks";
 import Study from "../study/Study";
 import AddCard from "../add-card/AddCard";
-import { listDecks } from "../utils/api";
+import { listDecks, readDeck } from "../utils/api";
 import EditDeck from "../edit-deck/EditDeck";
 
 function Layout() {
@@ -41,6 +41,7 @@ function Layout() {
               setDeckList={setDeckList}
               deckList={deckList}
               setRender={setRender}
+              render={render}
             />
           </Route>{" "}
           <Route path="/decks/:deckId/study" exact="true">
@@ -57,7 +58,7 @@ function Layout() {
             <EditDeck setRender={setRender} render={render} />
           </Route>
           <Route path="/decks/:deckId/cards/new" exact="true">
-            <AddCard />
+            <AddCard setRender={setRender} render={render} />
           </Route>
           <Route>
             <NotFound />
