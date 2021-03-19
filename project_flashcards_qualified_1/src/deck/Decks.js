@@ -112,7 +112,7 @@ export default function Decks({ setRender }) {
             >
               <div>
                 <Link
-                  to={`/decks/${deckId}/edit`}
+                  to={`/decks/${deckId}/ed`}
                   className="btn btn-secondary"
                   style={{ marginRight: "10px" }}
                 >
@@ -229,7 +229,7 @@ export default function Decks({ setRender }) {
                     {" "}
                     <div>
                       <Link
-                        to={`/decks/${deckId}/edit`}
+                        to={`/decks/${deckId}/cards/${card.id}/edit`}
                         className="btn btn-secondary"
                         style={{ marginRight: "10px" }}
                       >
