@@ -12,7 +12,7 @@ function EditCard({ setRender, render }) {
   };
   const [deckData, setDeckData] = useState({});
   const [formData, setFormData] = useState({ ...initialFormState });
-  const [mode, setMode] = useState("editCard");
+  const mode = "editCard";
 
   useEffect(() => {
     const abort = new AbortController();

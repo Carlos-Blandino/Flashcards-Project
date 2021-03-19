@@ -18,7 +18,6 @@ export default function Study({}) {
       const tempDeck = await readDeck(deckId, signal);
       setDeckInfo({ ...tempDeck });
       setCards(tempDeck.cards);
-      console.log("card", tempDeck.cards);
     }
     loadDeck();
     return () => {

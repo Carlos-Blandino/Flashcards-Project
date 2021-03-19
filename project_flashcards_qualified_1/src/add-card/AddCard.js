@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useParams, useHistory } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { createCard, readDeck } from "../utils/api";
 import CardForm from "../card-form/CardForm";
 
@@ -12,7 +12,7 @@ function AddCard({ setRender, render }) {
   };
   const [deckData, setDeckData] = useState({});
   const [formData, setFormData] = useState({ ...initialFormState });
-  const [mode, setMode] = useState("addCard");
+  const mode = "addCard";
 
   useEffect(() => {
     const abort = new AbortController();

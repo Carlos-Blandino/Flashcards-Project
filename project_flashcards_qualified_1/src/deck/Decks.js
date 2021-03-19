@@ -40,8 +40,6 @@ export default function Decks({ setRender }) {
     event.preventDefault();
     let cardId = event.target.getAttribute("id");
 
-    console.log("id", cardId);
-
     const abort = new AbortController();
     const signal = abort.signal;
     const result = window.confirm(
