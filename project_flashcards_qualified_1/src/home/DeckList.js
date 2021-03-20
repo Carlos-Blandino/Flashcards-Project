@@ -1,11 +1,18 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import DeckListItem from "./DeckListItem";
 import { Link } from "react-router-dom";
+import { listDecks } from "../utils/api";
+export default function DeckList({ setRender, render }) {
+  const [deckList, setDeckList] = useState([]);
+  useEffect(() => {
+    const abortController = new AbortController();
+    async function loadListDecks() {
+      const list = await listDecks(abortController.signal);
+      setDeckList(list);
+    }
+    loadListDecks();
+  }, [render]);
 
-export default function DeckList({ deckList, setDeckList, setRender }) {
-  function handleClick() {
-    setRender(false);
-  }
   return (
     <div>
       <div>
@@ -32,12 +39,11 @@ export default function DeckList({ deckList, setDeckList, setRender }) {
       {deckList.map((deck, index) => (
         <DeckListItem
           deck={deck}
-          deckList={deckList}
           index={index}
-          setDeckList={setDeckList}
+          setRender={setRender}
+          render={render}
         />
       ))}
-      {handleClick()}
     </div>
   );
 }

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { createDeck } from "../utils/api";
 
-function CreateDeck({ setRender, render }) {
+function CreateDeck() {
   const initialFormState = {
     name: "",
     description: "",
@@ -26,7 +26,6 @@ function CreateDeck({ setRender, render }) {
       }
     }
     saveDeckData();
-    setRender(!render);
     setFormData({ ...initialFormState });
     return abortController.abort();
   }

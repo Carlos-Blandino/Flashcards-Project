@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams, useHistory } from "react-router-dom";
 import { listCards, readCard, readDeck } from "../utils/api";
 
-export default function Study({}) {
+export default function Study() {
   const { deckId } = useParams();
   const [cards, setCards] = useState([]);
   const [flip, setFlip] = useState(false);
@@ -11,6 +11,7 @@ export default function Study({}) {
   const history = useHistory();
   const [deckInfo, setDeckInfo] = useState({});
 
+  //using readDeck to obtain the deck and cards
   useEffect(() => {
     const abort = new AbortController();
     const signal = abort.signal;
@@ -25,6 +26,7 @@ export default function Study({}) {
     };
   }, []);
 
+  //a local variable cardNumber and card are used to seed readCard
   useEffect(() => {
     const abortController = new AbortController();
     async function reLoadCard() {
@@ -74,10 +76,9 @@ export default function Study({}) {
       }
     }
   }
-
+  //don't reset the flip if its the last card
+  //no more cards to view in the cards container
   async function handleNext() {
-    //don't reset the flip if its the last card
-    //no more cards to view in the cards container
     if (cardNumber === cards.length) {
       if (cardNumber === cards.length && flip === true) {
         const response = window.confirm(

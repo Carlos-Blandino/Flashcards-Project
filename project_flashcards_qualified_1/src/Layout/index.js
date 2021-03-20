@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Header from "./Header";
 import NotFound from "./NotFound";
 import { Route, Switch } from "react-router-dom";
@@ -7,22 +7,11 @@ import CreateDeck from "../create-deck/CreateDeck";
 import Decks from "../deck/Decks";
 import Study from "../study/Study";
 import AddCard from "../add-card/AddCard";
-import { listDecks } from "../utils/api";
 import EditDeck from "../edit-deck/EditDeck";
 import EditCard from "../edit-card/EditCard";
 
 function Layout() {
-  const [deckList, setDeckList] = useState([]);
   const [render, setRender] = useState(false);
-
-  useEffect(() => {
-    const abortController = new AbortController();
-    async function loadListDecks() {
-      const list = await listDecks(abortController.signal);
-      setDeckList(list);
-    }
-    loadListDecks();
-  }, [render]);
 
   return (
     <div>
@@ -30,39 +19,25 @@ function Layout() {
       <div className="container">
         <Switch>
           <Route path="/" exact="true">
-            <DeckList
-              deckList={deckList}
-              setDeckList={setDeckList}
-              render={render}
-              setRender={setRender}
-            />
+            <DeckList render={render} setRender={setRender} />
           </Route>{" "}
           <Route path="/decks/new">
-            <CreateDeck
-              setDeckList={setDeckList}
-              deckList={deckList}
-              setRender={setRender}
-              render={render}
-            />
+            <CreateDeck />
           </Route>{" "}
           <Route path="/decks/:deckId/study" exact="true">
             <Study />
           </Route>
           <Route path="/decks/:deckId" exact="true">
-            <Decks
-              deckList={deckList}
-              setDeckList={setDeckList}
-              setRender={setRender}
-            />
+            <Decks />
           </Route>
           <Route path="/decks/:deckId/edit" exact="true">
-            <EditDeck setRender={setRender} render={render} />
+            <EditDeck />
           </Route>
           <Route path="/decks/:deckId/cards/:cardId/edit">
-            <EditCard setRender={setRender} render={render} />
+            <EditCard />
           </Route>
           <Route path="/decks/:deckId/cards/new" exact="true">
-            <AddCard setRender={setRender} render={render} />
+            <AddCard />
           </Route>
           <Route>
             <NotFound />

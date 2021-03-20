@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams, useHistory } from "react-router-dom";
 import { deleteDeck, readDeck, deleteCard } from "../utils/api";
 
-export default function Decks({ setRender }) {
+export default function Decks() {
   const { deckId } = useParams();
   const [cards, setCards] = useState([]);
   const history = useHistory();
@@ -31,7 +31,6 @@ export default function Decks({ setRender }) {
 
     if (result) {
       await deleteDeck(deckId, signal);
-      setRender(true);
       history.push("/");
     }
   }

@@ -3,7 +3,7 @@ import { useParams, useHistory } from "react-router-dom";
 import { createCard, readDeck } from "../utils/api";
 import CardForm from "../card-form/CardForm";
 
-function AddCard({ setRender, render }) {
+function AddCard() {
   const { deckId } = useParams();
   const history = useHistory();
   const initialFormState = {
@@ -19,7 +19,6 @@ function AddCard({ setRender, render }) {
     const signal = abort.signal;
     async function loadDeck() {
       const tempDeck = await readDeck(deckId, signal);
-      // setDeckInfo({ ...tempDeck });
       setDeckData({ ...tempDeck });
     }
     loadDeck();
@@ -45,7 +44,6 @@ function AddCard({ setRender, render }) {
       }
     }
     saveCardData();
-    setRender(!render);
     setFormData({ ...initialFormState });
     return abortController.abort();
   }

@@ -2,11 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Link, useParams, useHistory } from "react-router-dom";
 import { readDeck, updateDeck } from "../utils/api";
 
-function EditDeck({ setRender, render }) {
+function EditDeck() {
   const history = useHistory();
   const { deckId } = useParams();
   const [formData, setFormData] = useState({});
-  const [renderDeck, setRenderDeck] = useState(false);
 
   useEffect(() => {
     const abort = new AbortController();
@@ -20,12 +19,7 @@ function EditDeck({ setRender, render }) {
     return () => {
       abort.abort();
     };
-  }, [renderDeck]);
-
-  const initialFormState = {
-    name: formData.name,
-    description: formData.description,
-  };
+  }, []);
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -44,7 +38,6 @@ function EditDeck({ setRender, render }) {
       }
     }
     saveDeckData();
-    setRender(!render);
     return abortController.abort();
   }
 
