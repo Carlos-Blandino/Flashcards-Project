@@ -25,21 +25,20 @@ function EditCard() {
     return () => {
       abort.abort();
     };
-  }, []);
+  }, [deckId]);
 
   useEffect(() => {
     const abort = new AbortController();
     const signal = abort.signal;
     async function loadCard() {
       const tempDeck = await readCard(cardId, signal);
-      // setDeckInfo({ ...tempDeck });
       setFormData({ ...tempDeck });
     }
     loadCard();
     return () => {
       abort.abort();
     };
-  }, []);
+  }, [cardId]);
 
   function handleSubmit(event) {
     event.preventDefault();

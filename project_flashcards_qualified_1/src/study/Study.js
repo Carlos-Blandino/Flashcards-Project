@@ -24,7 +24,7 @@ export default function Study() {
     return () => {
       abort.abort();
     };
-  }, []);
+  }, [deckId]);
 
   //a local variable cardNumber and card are used to seed readCard
   useEffect(() => {

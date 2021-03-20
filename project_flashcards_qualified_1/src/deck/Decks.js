@@ -21,7 +21,7 @@ export default function Decks() {
     return () => {
       abort.abort();
     };
-  }, [renderCards]);
+  }, [deckId, renderCards]);
 
   async function handleDeleteDeck() {
     const abort = new AbortController();
