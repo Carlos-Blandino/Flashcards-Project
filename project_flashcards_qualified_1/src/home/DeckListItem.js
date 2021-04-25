@@ -13,10 +13,11 @@ export default function DeckListItem({ deck, index, setRender, render }) {
     Delete this deck? \n\nYou will not be able to recover it.`);
 
     if (result) {
-      await deleteDeck(deck.id, signal);
-      setRender(!render);
+      await deleteDeck(deck.id, signal)
+        setRender(!render)
       history.push("/");
     }
+
   }
 
   return (

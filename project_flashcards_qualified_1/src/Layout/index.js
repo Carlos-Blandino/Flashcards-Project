@@ -11,7 +11,7 @@ import EditDeck from "../edit-deck/EditDeck";
 import EditCard from "../edit-card/EditCard";
 
 function Layout() {
-  const [render, setRender] = useState(false);
+ // const [render, setRender] = useState(false);
 
   return (
     <div>
@@ -19,7 +19,7 @@ function Layout() {
       <div className="container">
         <Switch>
           <Route path="/" exact="true">
-            <DeckList render={render} setRender={setRender} />
+            <DeckList  />
           </Route>{" "}
           <Route path="/decks/new">
             <CreateDeck />

@@ -2,7 +2,7 @@
  * Defines the base URL for the API.
  * The default values is overridden by the `API_BASE_URL` environment variable.
  */
-const API_BASE_URL = process.env.API_BASE_URL || "http://localhost:5000";
+const API_BASE_URL = "http://localhost:5004"//process.env.REACT_APP_API_BASE_URL || "http://localhost:5004";
 
 /**
  * Defines the default headers for these functions to work with `json-server`
@@ -44,7 +44,8 @@ async function fetchJson(url, options) {
     if (response.status < 200 || response.status > 399) {
       throw new Error(`${response.status} - ${response.statusText}`);
     }
-    return await response.json();
+    const payload = await response.json();
+    return payload;
   } catch (error) {
     if (error.name !== "AbortError") {
       throw error;
@@ -201,6 +202,7 @@ export async function updateCard(updatedCard, signal) {
     method: "PUT",
     headers,
     body: JSON.stringify(updatedCard),
+      signal,
   };
   return await fetchJson(url, options);
 }

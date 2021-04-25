@@ -2,8 +2,11 @@ import React, { useState, useEffect } from "react";
 import DeckListItem from "./DeckListItem";
 import { Link } from "react-router-dom";
 import { listDecks } from "../utils/api";
-export default function DeckList({ setRender, render }) {
+
+export default function DeckList() {
+    const [render, setRender] = useState(false);
   const [deckList, setDeckList] = useState([]);
+
   useEffect(() => {
     const abortController = new AbortController();
     async function loadListDecks() {
