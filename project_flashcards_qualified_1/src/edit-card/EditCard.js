@@ -47,7 +47,9 @@ function EditCard() {
     const signal = abortController.signal;
     async function saveCardData() {
       try {
-        await updateCard(formData, signal);
+          console.log('edit card: handleSubmit for updateCard')
+        await updateCard(formData, signal).then(handleReset);
+
       } catch (error) {
         if (error.name === "AbortError") {
           console.log("Aborted");
@@ -57,8 +59,6 @@ function EditCard() {
       }
     }
     saveCardData();
-    handleReset();
-
     return abortController.abort();
   }
 

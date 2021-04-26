@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Link, useParams, useHistory} from "react-router-dom";
-import {listCards, readCard, readDeck} from "../utils/api";
+import { readCard, readDeck} from "../utils/api";
 
 export default function Study() {
     const {deckId} = useParams();
@@ -96,7 +96,7 @@ export default function Study() {
                                 width="22"
                                 height="18"
                                 fill="currentColor"
-                                class="bi bi-house-door"
+                                className="bi bi-house-door"
                                 viewBox="0 0 20 20"
                             >
                                 <path
@@ -158,7 +158,7 @@ export default function Study() {
                                         width="22"
                                         height="22"
                                         fill="currentColor"
-                                        class="bi bi-plus"
+                                        className="bi bi-plus"
                                         viewBox="2 1 16 16"
                                     >
                                         <path
